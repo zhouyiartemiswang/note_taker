@@ -25,7 +25,7 @@ npm install
 
 ## Usage
 
-[Deployed Application]()
+[Deployed Application](https://mysqlnotetaker.herokuapp.com/)
 
 ### Home Page 
 
