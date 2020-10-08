@@ -45,8 +45,17 @@ app.get("*", function(req, res) {
 app.post("/api/notes", function(req, res) {
     fs.readFile(path.join(__dirname, "db/db.json"), "utf8", (err, data) => {
         if (err) throw err;
-        let notesData = JSON.parse(data);
-        notesData.push(req.body);
+
+        let notesData = JSON.parse(data) || [];
+        let newData = req.body;
+
+        if (notesData.length === 0) {
+            newData.id = 1;
+        } else {
+            newData.id = notesData[notesData.length - 1].id + 1;
+        }
+
+        notesData.push(newData);
         console.log(notesData);
         fs.writeFile(path.join(__dirname, "db/db.json"), JSON.stringify(notesData, null, 4), err => {
             if (err) throw err;
@@ -55,6 +64,17 @@ app.post("/api/notes", function(req, res) {
     });
 
     return res.send(req.body);
+});
+
+app.delete("/api/notes:id", function(req, res) {
+    // fs.readFile(path.join(__dirname, "db/db.json"), "utf8", (err, data) => {
+    //     if (err) throw err;
+    //     let newNotesData = JSON.parse(data).filter(function(currentNote) {
+    //         return currentNote.id != req.params.id;
+    //     });
+    //     console.log(newNotesData);
+    // });
+    res.send("deleted");
 });
 
 // Start server to begin listening
