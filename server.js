@@ -31,7 +31,7 @@ app.get("/api/notes", function(req, res) {
     // Read data file
     fs.readFile(path.join(__dirname, "db/db.json"), "utf8", (err, data) => {
         if (err) throw err;
-        console.log(JSON.parse(data)[0]);
+        // console.log(JSON.parse(data)[0]);
         return res.json(JSON.parse(data));
     });
 
@@ -56,7 +56,7 @@ app.post("/api/notes", function(req, res) {
         }
 
         notesData.push(newData);
-        console.log(notesData);
+        // console.log(notesData);
         fs.writeFile(path.join(__dirname, "db/db.json"), JSON.stringify(notesData, null, 4), err => {
             if (err) throw err;
             console.log("writing complete");
@@ -66,14 +66,18 @@ app.post("/api/notes", function(req, res) {
     return res.send(req.body);
 });
 
-app.delete("/api/notes:id", function(req, res) {
-    // fs.readFile(path.join(__dirname, "db/db.json"), "utf8", (err, data) => {
-    //     if (err) throw err;
-    //     let newNotesData = JSON.parse(data).filter(function(currentNote) {
-    //         return currentNote.id != req.params.id;
-    //     });
-    //     console.log(newNotesData);
-    // });
+app.delete("/api/notes/:id", function(req, res) {
+    fs.readFile(path.join(__dirname, "db/db.json"), "utf8", (err, data) => {
+        if (err) throw err;
+        let newNotesData = JSON.parse(data).filter(function(currentNote) {
+            return currentNote.id != req.params.id;
+        });
+        console.log(newNotesData);
+        fs.writeFile(path.join(__dirname, "db/db.json"), JSON.stringify(newNotesData, null, 4), err => {
+            if (err) throw err;
+            console.log("writing complete");
+        })
+    });
     res.send("deleted");
 });
 
