@@ -13,12 +13,6 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-// Notes page route
-app.get("/notes", function(req, res) {
-    // Direct to notes.html
-    res.sendFile(path.join(__dirname, "public/notes.html"));
-});
-
 // API notes page route
 app.get("/api/notes", function(req, res) {
 
@@ -30,11 +24,6 @@ app.get("/api/notes", function(req, res) {
         res.json(JSON.parse(data));
     });
 
-});
-
-// Home page route, if anything other than /notes and /api/notes are entered in url, direct to home page
-app.get("*", function(req, res) {
-    res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
 // API notes route
@@ -95,6 +84,17 @@ app.delete("/api/notes/:id", function(req, res) {
     });
     res.send("deleted");
 
+});
+
+// Notes page route
+app.get("/notes", function(req, res) {
+    // Direct to notes.html
+    res.sendFile(path.join(__dirname, "public/notes.html"));
+});
+
+// Home page route, if anything other than /notes and /api/notes are entered in url, direct to home page
+app.get("*", function(req, res) {
+    res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
 // Start server to begin listening
